@@ -38,22 +38,36 @@
     <aside>
         <div class="cart--area">
             <div class="menu-closer">❌</div>
-            <h1>Suas Pizzas</h1>
+            <h1>Seu Pedido</h1>
             <div class="cart"></div>
             <div class="cart--details">
                 <div class="cart--totalitem subtotal">
-                    <span>Subtotal</span>
+                    <span>Valor do Pedido</span>
                     <span>R$ --</span>
                 </div>
                 <div class="cart--totalitem desconto">
-                    <span>Desconto (-10%)</span>
+                    <span>Desconto</span>
                     <span>R$ --</span>
                 </div>
                 <div class="cart--totalitem total big">
-                    <span>Total</span>
+                    <span>Em Dinheiro</span>
                     <span>R$ --</span>
                 </div>
+                <h4>Digite seus dados para fazer o pedido:</h4>
+                <div class="input--nome">
+                    <label for="nome">Nome:</label>
+                    <input type="text" name="nome" id="nome" class="nome">
+                </div>
+                <div class="input--endereco">
+                    <label for="endereco">Endereço:</label>
+                    <input type="text" name="endereco" id="endereco" class="endereco">
+                </div>
+                <div class="input--telefone">
+                    <label for="telefone">Telefone:</label>
+                    <input type="text" name="telefone" id="telefone" class="telefone">
+                </div>
                 <div class="cart--finalizar">Finalizar a compra</div>
+                <a style="display: none;" class="enviar-pedido" href="" target="_blank"></a>
             </div>
         </div>
     </aside>
@@ -67,11 +81,12 @@
                 <h1>--</h1>
                 <div class="pizzaInfo--desc">--</div>
                 <div class="pizzaInfo--sizearea">
-                    <div class="pizzaInfo--sector">Tamanho</div>
+                    <div class="pizzaInfo--sector">Desconto</div>
                     <div class="pizzaInfo--sizes">
-                        <div data-key="0" class="pizzaInfo--size">PEQUENA <span>--</span></div>
+                        Desconto de R$ 1.00 para pagamento em dinheiro.
+                        <!-- <div data-key="0" class="pizzaInfo--size">PEQUENA <span>--</span></div>
                         <div data-key="1" class="pizzaInfo--size">MÉDIO <span>--</span></div>
-                        <div data-key="2" class="pizzaInfo--size selected">GRANDE <span>--</span></div>
+                        <div data-key="2" class="pizzaInfo--size selected">GRANDE <span>--</span></div> -->
                     </div>
                 </div>
                 <div class="pizzaInfo--pricearea">

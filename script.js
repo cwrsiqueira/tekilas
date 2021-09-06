@@ -1,6 +1,9 @@
 let modalQt = 1;
 let cart = [];
 let modalKey = 0;
+let subtotal;
+let desconto;
+let total;
 
 const q = e=>document.querySelector(e);
 const qa = e=>document.querySelectorAll(e);
@@ -24,7 +27,7 @@ pizzaJson.map((item, index)=>{
         q('.pizzaInfo h1').innerHTML = pizzaJson[key].name;
         q('.pizzaInfo--desc').innerHTML = pizzaJson[key].description;
         q('.pizzaInfo--actualPrice').innerHTML = `R$ ${pizzaJson[key].price.toFixed(2)}`;
-        q('.pizzaInfo--size.selected').classList.remove('selected');
+        // q('.pizzaInfo--size.selected').classList.remove('selected');
 
         qa('.pizzaInfo--size').forEach((size, sizeIndex) => {
             if(sizeIndex == 2) {
@@ -76,7 +79,8 @@ qa('.pizzaInfo--size').forEach((size, sizeIndex) => {
 });
 
 q('.pizzaInfo--addButton').addEventListener('click', ()=>{
-    let size = parseInt(q('.pizzaInfo--size.selected').getAttribute('data-key'));
+    // let size = parseInt(q('.pizzaInfo--size.selected').getAttribute('data-key'));
+    let size = 1;
     let identifier = pizzaJson[modalKey].id+'@'+size;
     let key = cart.findIndex( item => item.identifier == identifier );
     if(key > -1) {
@@ -105,30 +109,19 @@ q('.menu-closer').addEventListener('click', ()=>{
 
 function updateCart() {
     q('.menu-openner span').innerHTML = cart.length;
+    let totalItems = 0;
 
     if(cart.length > 0) {
         q('aside').classList.add('show')
         q('.cart').innerHTML = '';
-        let subtotal = 0;
-        let desconto = 0;
-        let total = 0;
+        subtotal = 0;
+        desconto = 0;
+        total = 0;
         for(let i in cart) {
             let pizzaItem = pizzaJson.find((item) => item.id == cart[i].id )
             subtotal += pizzaItem.price * cart[i].qt;
             let cartItem = q('.models .cart--item').cloneNode(true)
-            let pizzaSizeName;
-            switch (cart[i].size) {
-                case 0:
-                    pizzaSizeName = 'P';
-                    break;
-                case 1:
-                    pizzaSizeName = 'M';
-                    break;
-                case 2:
-                    pizzaSizeName = 'G';
-                    break;
-            }
-            let pizzaName = `${pizzaItem.name} (${pizzaSizeName})`;
+            let pizzaName = `${pizzaItem.name}`;
             cartItem.querySelector('img').src = pizzaItem.img;
             cartItem.querySelector('.cart--item-nome').innerHTML = pizzaName;
             cartItem.querySelector('.cart--item--qt').innerHTML = cart[i].qt;
@@ -146,10 +139,10 @@ function updateCart() {
                 }
                 updateCart()
             });
-            
+            totalItems += cart[i].qt;
             q('.cart').append(cartItem);
         }
-        desconto = subtotal * 0.1;
+        desconto = totalItems * 1;
         total = subtotal - desconto;
         q('.subtotal span:last-child').innerHTML = `R$ ${subtotal.toFixed(2)}`;
         q('.desconto span:last-child').innerHTML = `R$ ${desconto.toFixed(2)}`;
@@ -159,3 +152,35 @@ function updateCart() {
         q('aside').style.left = '100vw';
     }
 }
+
+q('.cart--finalizar').addEventListener('click', ()=>{
+
+    let pedido = [];
+    let cliente = document.querySelector('#nome').value;
+    let endereco = document.querySelector('#endereco').value;
+    let telefone = document.querySelector('#telefone').value;
+    let texto = `NOME: ${cliente} - ENDEREÇO: ${endereco} - TELEFONE: ${telefone} - PEDIDO: `;
+
+    for(let item in cart) {
+        nome = pizzaJson[cart[item].id].name;
+        qt = cart[item].qt;
+        texto += `Quant.: ${qt} - Prod.: ${nome} // `;
+    }
+
+    texto += `- Pagto em Dinheiro: ${total.toFixed(2)} - Outros meios de pagamento: ${subtotal.toFixed(2)}`;
+
+    /* MSG WHATSAPP */
+
+    let number = '559691215090';
+    let msg = texto;
+    let urlMsg = msg.split(' ').join('%20')
+    let target = `https://wa.me/${number}?text=${urlMsg}`;
+
+    let a = document.querySelector('.enviar-pedido');
+
+    a.href = target;
+    a.click();
+    q('aside').style.left = '100vw';
+
+    /* */ 
+})
