@@ -339,6 +339,11 @@ h1 {
     flex-direction: column;
 }
 
+textarea:focus, input:focus, select:focus {
+    box-shadow: 0 0 0 0;
+    border: 0 none;
+    outline: 0;
+} 
 .input--nome label,
 .input--endereco label,
 .input--telefone label {
@@ -349,8 +354,15 @@ h1 {
 .input--nome input,
 .input--endereco input,
 .input--telefone input {
+    border: 1px solid #ccc;
     padding:5px;
     border-radius: 5px;
+}
+.error {
+    border: 1px solid red !important;
+}
+.error-msg {
+    color: red;
 }
 
 @media (max-width:1000px) {

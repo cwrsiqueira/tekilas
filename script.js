@@ -155,32 +155,84 @@ function updateCart() {
 
 q('.cart--finalizar').addEventListener('click', ()=>{
 
+    if(q('.nome').classList.contains('error')) {
+        q('.nome').classList.remove('error');
+    }
+    if(q('.endereco').classList.contains('error')) {
+        q('.endereco').classList.remove('error');
+    }
+    if(q('.telefone').classList.contains('error')) {
+        q('.telefone').classList.remove('error');
+    }
+    if(q('.input--nome small').style.display == 'block') {
+        q('.input--nome small').style.display = 'none';
+    }
+    if(q('.input--endereco small').style.display == 'block') {
+        q('.input--endereco small').style.display = 'none';
+    }
+    if(q('.input--telefone small').style.display == 'block') {
+        q('.input--telefone small').style.display = 'none';
+    }
+
     let pedido = [];
     let cliente = document.querySelector('#nome').value;
     let endereco = document.querySelector('#endereco').value;
     let telefone = document.querySelector('#telefone').value;
-    let texto = `NOME: ${cliente} - ENDEREÇO: ${endereco} - TELEFONE: ${telefone} - PEDIDO: `;
 
-    for(let item in cart) {
-        nome = pizzaJson[cart[item].id].name;
-        qt = cart[item].qt;
-        texto += `Quant.: ${qt} - Prod.: ${nome} // `;
+    if(cliente != '' && endereco != '' && telefone != '') {
+        let texto = `NOME: ${cliente} - ENDEREÇO: ${endereco} - TELEFONE: ${telefone} - PEDIDO: `;
+
+        for(let item in cart) {
+            nome = pizzaJson[cart[item].id].name;
+            qt = cart[item].qt;
+            texto += `Quant.: ${qt} - Prod.: ${nome} // `;
+        }
+
+        texto += `- Pagto em Dinheiro: ${total.toFixed(2)} - Outros meios de pagamento: ${subtotal.toFixed(2)}`;
+
+        /* MSG WHATSAPP */
+
+        let number = '559691215090';
+        let msg = texto;
+        let urlMsg = msg.split(' ').join('%20')
+        let target = `https://wa.me/${number}?text=${urlMsg}`;
+
+        let a = document.querySelector('.enviar-pedido');
+
+        a.href = target;
+        a.click();
+        q('aside').style.left = '100vw';
+
+        /* */ 
+    } else {
+        if(cliente == '') {
+            q('.nome').classList.add('error');
+            q('.input--nome small').style.display = 'block';
+            setTimeout(() => {
+                alert('Nome deve ser preenchido!');
+            }, 100);
+        } else if(endereco == '') {
+            q('.endereco').classList.add('error');
+            q('.input--endereco small').style.display = 'block';
+            setTimeout(() => {
+                alert('Endereço deve ser preenchido!');
+            }, 100);
+        } else if(telefone == '') {
+            q('.telefone').classList.add('error');
+            q('.input--telefone small').style.display = 'block';
+            setTimeout(() => {
+                alert('Telefone deve ser preenchido!');
+            }, 100);
+        } else {
+            q('.nome').classList.add('error');
+            q('.input--nome small').style.display = 'block';
+            q('.endereco').classList.add('error');
+            q('.input--endereco small').style.display = 'block';
+            q('.telefone').classList.add('error');
+            q('.input--telefone small').style.display = 'block';
+            setTimeout(() => {
+                alert('Nome, Endereço e Telefone devem ser preenchidos!');
+            }, 100);
+        }
     }
-
-    texto += `- Pagto em Dinheiro: ${total.toFixed(2)} - Outros meios de pagamento: ${subtotal.toFixed(2)}`;
-
-    /* MSG WHATSAPP */
-
-    let number = '559691215090';
-    let msg = texto;
-    let urlMsg = msg.split(' ').join('%20')
-    let target = `https://wa.me/${number}?text=${urlMsg}`;
-
-    let a = document.querySelector('.enviar-pedido');
-
-    a.href = target;
-    a.click();
-    q('aside').style.left = '100vw';
-
-    /* */ 
 })
